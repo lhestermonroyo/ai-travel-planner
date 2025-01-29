@@ -1,6 +1,9 @@
 import React, { FC } from 'react';
+import { TextInputProps } from 'react-native';
 import {
   FormControl,
+  FormControlError,
+  FormControlErrorText,
   FormControlHelper,
   FormControlHelperText,
   FormControlLabel,
@@ -9,7 +12,7 @@ import {
 import { Input, InputField, InputIcon, InputSlot } from './ui/input';
 import { Button } from './ui/button';
 
-interface IFormInputProps {
+interface IFormInputProps extends TextInputProps {
   type: 'text' | 'password' | undefined;
   placeholder: string;
   label: string;
@@ -21,6 +24,7 @@ interface IFormInputProps {
   isRequired?: boolean;
   isReadOnly?: boolean;
   isDisabled?: boolean;
+  errorMessage?: string;
 }
 
 const FormInput: FC<IFormInputProps> = ({
@@ -35,6 +39,8 @@ const FormInput: FC<IFormInputProps> = ({
   isRequired = false,
   isReadOnly = false,
   isDisabled = false,
+  errorMessage,
+  ...props
 }) => {
   return (
     <FormControl
@@ -42,6 +48,7 @@ const FormInput: FC<IFormInputProps> = ({
       isDisabled={isDisabled}
       isReadOnly={isReadOnly}
       isRequired={isRequired}
+      isInvalid={!!errorMessage}
     >
       <FormControlLabel>
         <FormControlLabelText>{label}</FormControlLabelText>
@@ -49,14 +56,16 @@ const FormInput: FC<IFormInputProps> = ({
 
       <Input variant="outline" className="my-1 border-gray-500" size="lg">
         <InputField
+          autoCapitalize="none"
           type={type}
           placeholder={placeholder}
           value={value}
           onChangeText={onChangeText}
+          {...props}
         />
         {rightIcon && (
           <InputSlot>
-            <Button onPress={onPressRightIcon}>
+            <Button onPress={onPressRightIcon} variant="link" className="mr-4">
               <InputIcon as={rightIcon} className="text-blue-500" />
             </Button>
           </InputSlot>
@@ -69,6 +78,12 @@ const FormInput: FC<IFormInputProps> = ({
             {helperText}
           </FormControlHelperText>
         </FormControlHelper>
+      )}
+
+      {errorMessage && (
+        <FormControlError>
+          <FormControlErrorText>{errorMessage}</FormControlErrorText>
+        </FormControlError>
       )}
     </FormControl>
   );

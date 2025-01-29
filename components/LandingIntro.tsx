@@ -13,7 +13,7 @@ const LandingIntro = () => {
   const slides = [
     {
       key: '1',
-      title: 'Welcome to Travel Planner',
+      title: 'Welcome to AI Travel Planner',
       text: 'Your AI-powered travel planner',
       image: require('./../assets/images/1.png'),
       backgroundColor: '#febe29',
