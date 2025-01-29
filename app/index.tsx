@@ -1,9 +1,20 @@
+import React, { Fragment } from 'react';
 import { Redirect } from 'expo-router';
-import React, { Fragment, useState } from 'react';
+import { RecoilRoot, useRecoilValue } from 'recoil';
+import states from '@/states';
 import LandingIntro from '../components/LandingIntro';
 
 const Index = () => {
-  const [isAuth, setIsAuth] = useState(false);
+  return (
+    <RecoilRoot>
+      <RootContainer />
+    </RecoilRoot>
+  );
+};
+
+const RootContainer = () => {
+  const auth = useRecoilValue(states.auth);
+  const { isAuth } = auth;
 
   return (
     <Fragment>

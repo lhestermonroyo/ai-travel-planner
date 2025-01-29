@@ -7,6 +7,7 @@ import {
   FormControlLabelText,
 } from './ui/form-control';
 import { Input, InputField, InputIcon, InputSlot } from './ui/input';
+import { Button } from './ui/button';
 
 interface IFormInputProps {
   type: 'text' | 'password' | undefined;
@@ -14,6 +15,7 @@ interface IFormInputProps {
   label: string;
   value: string;
   onChangeText: (text: string) => void;
+  onPressRightIcon?: () => void;
   rightIcon?: any;
   helperText?: string;
   isRequired?: boolean;
@@ -27,6 +29,7 @@ const FormInput: FC<IFormInputProps> = ({
   label,
   value,
   onChangeText,
+  onPressRightIcon,
   rightIcon,
   helperText,
   isRequired = false,
@@ -35,7 +38,7 @@ const FormInput: FC<IFormInputProps> = ({
 }) => {
   return (
     <FormControl
-      size="lg"
+      size="md"
       isDisabled={isDisabled}
       isReadOnly={isReadOnly}
       isRequired={isRequired}
@@ -44,7 +47,7 @@ const FormInput: FC<IFormInputProps> = ({
         <FormControlLabelText>{label}</FormControlLabelText>
       </FormControlLabel>
 
-      <Input variant="outline" className="my-1 h-14 border-gray-500" size="xl">
+      <Input variant="outline" className="my-1 border-gray-500" size="lg">
         <InputField
           type={type}
           placeholder={placeholder}
@@ -53,7 +56,9 @@ const FormInput: FC<IFormInputProps> = ({
         />
         {rightIcon && (
           <InputSlot>
-            <InputIcon as={rightIcon} className="mr-4 color-gray-600" />
+            <Button onPress={onPressRightIcon}>
+              <InputIcon as={rightIcon} className="text-blue-500" />
+            </Button>
           </InputSlot>
         )}
       </Input>
