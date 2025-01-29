@@ -3,12 +3,12 @@ import { StyleSheet, Image, Platform } from 'react-native';
 import { HStack } from '@/components/ui/hstack';
 import { Text } from '@/components/ui/text';
 
-const Discover = () => {
+const Login = () => {
   return (
     <HStack>
-      <Text>Discover</Text>
+      <Text>Login</Text>
     </HStack>
   );
 };
 
-export default Discover;
+export default Login;

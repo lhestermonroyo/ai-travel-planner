@@ -1,4 +1,4 @@
-import "../global.css";
+import '../global.css';
 import { DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
@@ -14,7 +14,9 @@ SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+    Outfit: require('./../assets/fonts/Outfit-Regular.ttf'),
+    'Outfit-Medium': require('./../assets/fonts/Outfit-Medium.ttf'),
+    'Outfit-Bold': require('./../assets/fonts/Outfit-Bold.ttf'),
   });
 
   useEffect(() => {

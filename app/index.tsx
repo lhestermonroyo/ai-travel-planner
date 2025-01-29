@@ -1,12 +1,14 @@
 import { Redirect } from 'expo-router';
-import React, { useState } from 'react';
-import { Text, View } from 'react-native';
-import Login from './Login';
+import React, { Fragment, useState } from 'react';
+import LandingIntro from '../components/LandingIntro';
 
 const Index = () => {
   const [isAuth, setIsAuth] = useState(false);
+
   return (
-    <View>{isAuth ? <Redirect href="/(tabs)/MyTrips" /> : <Login />}</View>
+    <Fragment>
+      {isAuth ? <Redirect href="/(tabs)/MyTrips" /> : <LandingIntro />}
+    </Fragment>
   );
 };
 
