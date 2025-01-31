@@ -6,7 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 
-export default function TabLayout() {
+const TabLayout = () => {
   const colorScheme = useColorScheme();
 
   console.log('colorScheme', colorScheme);
@@ -16,7 +16,6 @@ export default function TabLayout() {
       screenOptions={{
         tabBarActiveTintColor: Colors['light'].tint,
         headerShown: false,
-
         tabBarStyle: Platform.select({
           ios: {
             position: 'absolute',
@@ -54,4 +53,6 @@ export default function TabLayout() {
       />
     </Tabs>
   );
-}
+};
+
+export default TabLayout;

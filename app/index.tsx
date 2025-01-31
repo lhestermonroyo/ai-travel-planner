@@ -27,11 +27,18 @@ const Index = () => {
 
   const onAuthStateChangedHandler = (user: any) => {
     try {
-      console.log('auth user:', user);
       if (user && user.emailVerified) {
         setAuth({
-          isAuth: true,
-          user: user,
+          isAuth: !!user?.uid,
+          user: {
+            email: user?.email,
+            uid: user?.uid,
+          },
+        });
+      } else {
+        setAuth({
+          isAuth: false,
+          user: null,
         });
       }
     } catch (error) {

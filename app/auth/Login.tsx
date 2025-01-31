@@ -22,6 +22,7 @@ import states from '@/states';
 
 import Logo from '@/components/Logo';
 import FormInput from '@/components/FormInput';
+import FormButton from '@/components/FormButton';
 
 const Login = () => {
   const setAuth = useSetRecoilState(states.auth);
@@ -110,12 +111,12 @@ const Login = () => {
     <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
       <SafeAreaView style={{ flex: 1 }}>
         <ScrollView>
-          <VStack className="mt-24 px-4" space="4xl">
+          <VStack className="my-24 px-4" space="4xl">
             <Logo />
 
             <VStack space="xs">
               <Text size="4xl">Welcome back!</Text>
-              <Text size="xl" className="text-blue-500">
+              <Text size="xl" className="text-primary-500">
                 Let's get you signed in
               </Text>
             </VStack>
@@ -144,17 +145,11 @@ const Login = () => {
                 errorMessage={formErrors.password}
               />
 
-              <Button
-                className="bg-blue-500 disabled:bg-blue-200 mt-4"
-                size="xl"
-                variant="solid"
-                action="primary"
-                disabled={submitting}
+              <FormButton
+                text="Login"
+                loading={submitting}
                 onPress={handleSubmit}
-              >
-                <ButtonText className="color-white">Login</ButtonText>
-                {submitting && <ButtonSpinner className="color-white" />}
-              </Button>
+              />
             </VStack>
 
             <Center>
@@ -163,7 +158,7 @@ const Login = () => {
                   No account yet?
                 </Text>
                 <Link onPress={() => router.push('/auth/SignUp')}>
-                  <Text size="lg" className="text-blue-500">
+                  <Text size="lg" className="text-primary-500">
                     Sign up
                   </Text>
                 </Link>

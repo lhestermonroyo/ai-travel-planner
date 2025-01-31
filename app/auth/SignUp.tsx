@@ -19,6 +19,7 @@ import services from '@/services';
 
 import FormInput from '@/components/FormInput';
 import Logo from '@/components/Logo';
+import FormButton from '@/components/FormButton';
 
 const SignUp = () => {
   const [values, setValues] = useState({
@@ -135,8 +136,8 @@ const SignUp = () => {
 
             <VStack space="xs">
               <Text size="4xl">Create your account</Text>
-              <Text size="2xl" className="text-blue-500">
-                Sign up to get started
+              <Text size="xl" className="text-primary-500">
+                Let's get you signed in
               </Text>
             </VStack>
 
@@ -191,17 +192,11 @@ const SignUp = () => {
                 errorMessage={formErrors.confPassword}
               />
 
-              <Button
-                className="bg-blue-500 disabled:bg-blue-200 mt-4"
-                size="xl"
-                variant="solid"
-                action="primary"
-                disabled={submitting}
+              <FormButton
+                text="Create Account"
+                loading={submitting}
                 onPress={handleSubmit}
-              >
-                <ButtonText className="color-white">Create Account</ButtonText>
-                {submitting && <ButtonSpinner className="color-white" />}
-              </Button>
+              />
             </VStack>
 
             <Center>
@@ -210,7 +205,7 @@ const SignUp = () => {
                   Already have an account?
                 </Text>
                 <Link onPress={() => router.push('/auth/Login')}>
-                  <Text size="lg" className="text-blue-500">
+                  <Text size="lg" className="text-primary-500">
                     Login
                   </Text>
                 </Link>

@@ -16,7 +16,6 @@ const signUp = async (email: string, password: string) => {
     const user = userCreds.user;
     await emailVerification(user);
 
-    console.log('[signUp] user', user);
     return user;
   } catch (error) {
     throw error;
@@ -29,14 +28,6 @@ const logIn = async (email: string, password: string) => {
     const user = userCreds.user;
 
     return user;
-  } catch (error) {
-    throw error;
-  }
-};
-
-const logOut = async () => {
-  try {
-    await signOut(auth);
   } catch (error) {
     throw error;
   }
@@ -56,6 +47,5 @@ export const emailVerification = async (user: any) => {
 export default {
   signUp,
   logIn,
-  logOut,
   emailVerification,
 };

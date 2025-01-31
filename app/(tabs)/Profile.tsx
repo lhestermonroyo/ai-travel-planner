@@ -1,33 +1,32 @@
-import { StyleSheet, Image, Platform } from 'react-native';
-
-import { HStack } from '@/components/ui/hstack';
 import { Text } from '@/components/ui/text';
 import { Button, ButtonText } from '@/components/ui/button';
-import services from '@/services';
 import { Box } from '@/components/ui/box';
 import { useRouter } from 'expo-router';
-import { useResetRecoilState } from 'recoil';
+import { useRecoilValue, useResetRecoilState } from 'recoil';
 import states from '@/states';
+import { auth as firebaseAuth } from '@/services/firebase';
+import { signOut } from 'firebase/auth';
 
 const Profile = () => {
+  const auth = useRecoilValue(states.auth);
   const resetAuth = useResetRecoilState(states.auth);
 
   const router = useRouter();
 
   const handleSignOut = async () => {
     try {
-      await services.auth.logOut();
+      await signOut(firebaseAuth);
 
       resetAuth();
       router.navigate('/auth/Login');
     } catch (error) {
-      console.log('Profile [handleSignOut] error', error);
+      console.log('[handleSignOut] error', error);
     }
   };
 
   return (
-    <Box flex={1} justifyContent="center" alignItems="center">
-      <Text>Profile</Text>
+    <Box className="display-flex justify-center align-center">
+      <Text>Profile: {JSON.stringify(auth.user)}</Text>
       <Button onPress={handleSignOut}>
         <ButtonText>Sign Out</ButtonText>
       </Button>
