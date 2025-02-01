@@ -135,7 +135,9 @@ const SignUp = () => {
             <Logo />
 
             <VStack space="xs">
-              <Text size="4xl">Create your account</Text>
+              <Text size="4xl" className="font-medium">
+                Create your account
+              </Text>
               <Text size="xl" className="text-primary-500">
                 Let's get you signed in
               </Text>

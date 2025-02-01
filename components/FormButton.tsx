@@ -35,7 +35,7 @@ const FormButton: FC<IFormButtonProps> = ({
       onPress={onPress}
       {...props}
     >
-      {icon && <ButtonIcon as={icon} />}
+      {icon}
       <ButtonText>{text}</ButtonText>
       {loading && <ButtonSpinner />}
     </Button>

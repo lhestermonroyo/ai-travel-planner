@@ -7,6 +7,7 @@ import { auth as firebaseAuth } from '@/services/firebase';
 import states from '@/states';
 import LandingIntro from '../components/LandingIntro';
 import Loading from '@/components/Loading';
+import services from '@/services';
 
 const Index = () => {
   const [auth, setAuth] = useRecoilState(states.auth);
@@ -25,14 +26,19 @@ const Index = () => {
     };
   }, []);
 
-  const onAuthStateChangedHandler = (user: any) => {
+  const onAuthStateChangedHandler = async (user: any) => {
     try {
       if (user && user.emailVerified) {
+        const userDetail = await services.database.getUser(user.email);
+
+        console.log('userDetail', userDetail);
+
         setAuth({
           isAuth: !!user?.uid,
           user: {
             email: user?.email,
             uid: user?.uid,
+            ...userDetail,
           },
         });
       } else {

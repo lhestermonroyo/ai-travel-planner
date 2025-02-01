@@ -77,14 +77,22 @@ const Login = () => {
         return;
       }
 
-      const user = await services.auth.logIn(
+      const user: any = await services.auth.logIn(
         values.email.trim(),
         values.password.trim()
       );
 
       if (user) {
         if (user.emailVerified) {
-          setAuth({ user, isAuth: true });
+          const userDetails = await services.database.getUser(user.email);
+          console.log('userDetails', userDetails);
+
+          setAuth({
+            user: {
+              ...userDetails,
+            },
+            isAuth: true,
+          });
 
           router.push('/(tabs)/MyTrips');
         } else {
@@ -115,7 +123,7 @@ const Login = () => {
             <Logo />
 
             <VStack space="xs">
-              <Text size="4xl">Welcome back!</Text>
+              <Text size="4xl" className='font-medium'>Welcome back!</Text>
               <Text size="xl" className="text-primary-500">
                 Let's get you signed in
               </Text>
