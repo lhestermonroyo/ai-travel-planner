@@ -11,7 +11,7 @@ const initialState: any = {
     budgetType: null,
     notes: '',
   },
-  tripDetails: null,
+  tripItem: null,
   tripList: [],
 };
 

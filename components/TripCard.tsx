@@ -56,7 +56,7 @@ const TripCard: FC<ITripCardProps> = ({ item }) => {
   const handleViewTrip = () => {
     setTrip((prev: any) => ({
       ...prev,
-      tripDetails: item,
+      tripItem: item,
     }));
     router.push('/trip-details');
   };

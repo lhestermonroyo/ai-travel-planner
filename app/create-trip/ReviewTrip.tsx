@@ -112,7 +112,7 @@ const SelectBudgetType = () => {
               budgetType: null,
               notes: '',
             },
-            tripDetails: response.data(),
+            tripItem: response.data(),
           }));
           handleToast(
             'Generate Trip Success',

@@ -21,7 +21,7 @@ const FormReviewCard: FC<IFormReviewCardProps> = ({
   return (
     <Card className="bg-white">
       <HStack space="md" className="items-center justify-between">
-        <VStack space="md">
+        <VStack space="sm">
           <Text size="md" className="text-secondary-900">
             {title}
           </Text>

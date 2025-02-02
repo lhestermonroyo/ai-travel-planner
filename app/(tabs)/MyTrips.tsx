@@ -2,10 +2,12 @@ import { FC, Fragment, useEffect, useState } from 'react';
 import { FlatList } from 'react-native';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Ionicons } from '@expo/vector-icons';
 import { VStack } from '@/components/ui/vstack';
 import { Text } from '@/components/ui/text';
 import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
-import { Image } from '@/components/ui/image';
+import { HStack } from '@/components/ui/hstack';
+import { Card } from '@/components/ui/card';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
 import states from '@/states';
@@ -13,10 +15,6 @@ import services from '@/services';
 
 import FormButton from '@/components/FormButton';
 import MyTripsEmpty from '@/components/MyTripsEmpty';
-import { Card } from '@/components/ui/card';
-import { Ionicons } from '@expo/vector-icons';
-import { HStack } from '@/components/ui/hstack';
-import { format } from 'date-fns';
 import TripCard from '@/components/TripCard';
 
 const MyTrips: FC = () => {
@@ -47,9 +45,7 @@ const MyTrips: FC = () => {
     } catch (error) {
       console.log('fetchTrips [error]', error);
     } finally {
-      setTimeout(() => {
-        setLoading(false);
-      }, 3000);
+      setLoading(false);
     }
   };
 
