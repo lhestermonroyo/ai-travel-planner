@@ -2,15 +2,17 @@ import { atom } from 'recoil';
 
 const initialState: any = {
   tripForm: {
-    destination: '',
+    destination: null,
     travelDates: {
       start: '',
       end: '',
     },
     travelType: null,
     budgetType: null,
+    notes: '',
   },
-  trips: [],
+  tripDetails: null,
+  tripList: [],
 };
 
 const TRIP_STATE = atom({

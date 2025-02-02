@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  FlatList,
-  KeyboardAvoidingView,
-  SafeAreaView,
-  TouchableOpacity,
-} from 'react-native';
+import { FlatList, KeyboardAvoidingView, SafeAreaView } from 'react-native';
 import { useRouter } from 'expo-router';
 import 'react-native-get-random-values';
 import { Ionicons } from '@expo/vector-icons';
@@ -12,8 +7,6 @@ import { Text } from '@/components/ui/text/';
 import { VStack } from '@/components/ui/vstack';
 import { HStack } from '@/components/ui/hstack';
 import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { Image } from '@/components/ui/image';
 import { useRecoilState } from 'recoil';
 
 import states from '@/states';
@@ -27,12 +20,18 @@ const SelectTravelType = () => {
 
   const router = useRouter();
 
-  const handleSelectTravelType = (travelType: any) => {
+  const handleSelectTravelType = (item: any) => {
+    const { name, description, pax } = item;
+
     setTrip((prev: any) => ({
       ...prev,
       tripForm: {
         ...prev.tripForm,
-        travelType,
+        travelType: {
+          name,
+          description,
+          pax,
+        },
       },
     }));
   };

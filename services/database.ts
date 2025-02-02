@@ -1,4 +1,13 @@
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import {
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  setDoc,
+  where,
+} from 'firebase/firestore';
 import { db } from './firebase';
 
 // USER DATABASE
@@ -27,13 +36,39 @@ const getUser = async (email: string) => {
 };
 
 // TRIPS DATABASE
-
-const getTrips = async (email: string) => {
+const saveTrip = async (email: string, tripDetails: any, aiGenTrip: any) => {
   try {
-    const docRef = doc(db, 'trips', email);
-    const response = (await getDoc(docRef)).data();
+    const date = new Date();
+    const createdAt = date.toISOString();
 
-    return response;
+    const docRef = await addDoc(collection(db, 'trips'), {
+      email,
+      tripDetails,
+      aiGenTrip,
+      ratings: null,
+      createdAt,
+    });
+
+    if (docRef) {
+      return await getDoc(doc(db, 'trips', docRef.id));
+    }
+  } catch (error) {
+    console.log('saveTrip [error]', error);
+    throw error;
+  }
+};
+
+const getTripsByEmail = async (email: string) => {
+  try {
+    const q = query(collection(db, 'trips'), where('email', '==', email));
+    const querySnapshot = await getDocs(q);
+
+    return querySnapshot.docs.map(doc => {
+      return {
+        id: doc.id,
+        ...doc.data(),
+      };
+    });
   } catch (error) {
     console.log('getTrips [error]', error);
     throw error;
@@ -43,5 +78,6 @@ const getTrips = async (email: string) => {
 export default {
   saveUser,
   getUser,
-  getTrips,
+  saveTrip,
+  getTripsByEmail,
 };

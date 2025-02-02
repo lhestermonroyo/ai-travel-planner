@@ -85,7 +85,6 @@ const Login = () => {
       if (user) {
         if (user.emailVerified) {
           const userDetails = await services.database.getUser(user.email);
-          console.log('userDetails', userDetails);
 
           setAuth({
             user: {
@@ -123,7 +122,9 @@ const Login = () => {
             <Logo />
 
             <VStack space="xs">
-              <Text size="4xl" className='font-medium'>Welcome back!</Text>
+              <Text size="4xl" className="font-medium">
+                Welcome back!
+              </Text>
               <Text size="xl" className="text-primary-500">
                 Let's get you signed in
               </Text>

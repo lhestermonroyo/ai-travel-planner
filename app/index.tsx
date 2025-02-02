@@ -29,16 +29,14 @@ const Index = () => {
   const onAuthStateChangedHandler = async (user: any) => {
     try {
       if (user && user.emailVerified) {
-        const userDetail = await services.database.getUser(user.email);
-
-        console.log('userDetail', userDetail);
+        const userDetails = await services.database.getUser(user.email);
 
         setAuth({
           isAuth: !!user?.uid,
           user: {
             email: user?.email,
             uid: user?.uid,
-            ...userDetail,
+            ...userDetails,
           },
         });
       } else {

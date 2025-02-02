@@ -49,3 +49,90 @@ export const budgetTypes = [
     icon: require('@/assets/images/budget_type_3.png'),
   },
 ];
+
+export const AI_PROMPT = `
+Generate a travel plan based on the following trip details and preferences. Please read the travel details carefully and follow the return instructions.
+
+User's Travel Details and Preferences: {travelDetails}
+
+User's Coordinates: {coordinates}
+
+Return a JSON object ONLY using this type: {
+  destination: string;
+  travelDates: {
+    start: string;
+    end: string;
+  };
+  noOfDays: number;
+  estimatedBudget: string; // e.g. $1000-$1500
+  itinerary: {
+    day: number;
+    date: string;
+    activities: {
+      name: string;
+      description: string;
+      time: string; // e.g. 9:00 AM - 12:00 PM
+      location: string;
+    }[];
+  }[];
+  flightSuggestions: {
+    airline: string;
+    departure: string;
+    arrival: string;
+    duration: string;
+    price: string;
+    logoUri: string;
+    bookingLink: string;
+  }[];
+  hotelSuggestions: {
+    name: string;
+    description: string;
+    location: string;
+    price: string; // e.g. $100-$200 per night
+    totalPrice: string; 
+    rating: string;
+    geoLocation: {
+      lat: number;
+      lng: number;
+    };
+    imageUri: string;
+    bookingLink: string;
+  }[];
+}
+
+Currency Usage
+- Use the user's coordinates to determine the user's currency
+- Don't use the destination's currency
+- Apply it in the values of price, totalPrice, estimatedBudget
+
+For Flight Suggestions
+- Check what airlines are available in the user's coordinates
+- At least 5 flight suggestions
+- Suggest flight according to the user's trip details budget type
+- Suggest also the flights selected on the travel days
+- Put a shortcut link for booking
+
+For Hotel Suggestions
+- At least 5 hotel suggestions 
+- Suggest hotel according to the user's trip details budget type and pax
+- Put the total price according to the price and number of travel days 
+- Put a shortcut link for booking
+
+For Travel Itinerary
+- Make the places to tour half city and half nature
+- Suggest also the places that are popular
+- Consider also the season on suggesting places and activities
+- Apply breakfast, lunch and dinner on the itinerary and the place to eat
+- Ideal place to eat should be nearby or can be easily travelled from the previous activity place
+
+For Notes
+- If user has additional notes, please consider the user's additional notes on the itinerary
+
+For Image/Logo URIs
+- Search in the web for the image/logo and add it in the imageUri/logoUri
+- Make sure every image/logo is related to its content
+- URIs should not be empty and returns a 404 status code
+
+For Date Format
+- Use the new Date().toISOString() format to all date values
+`;

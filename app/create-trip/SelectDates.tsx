@@ -109,6 +109,7 @@ const SelectDates = () => {
                     </Text>
                   </VStack>
                   <FormButton
+                    size="md"
                     variant="outline"
                     text="Reset"
                     onPress={handleResetDates}

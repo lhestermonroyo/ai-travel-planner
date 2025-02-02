@@ -11,6 +11,7 @@ interface IFormButtonProps {
   disabled?: boolean;
   onPress?: () => void;
   icon?: any;
+  iconEnd?: any;
 }
 
 const FormButton: FC<IFormButtonProps> = ({
@@ -23,6 +24,7 @@ const FormButton: FC<IFormButtonProps> = ({
   disabled,
   onPress,
   icon,
+  iconEnd,
   ...props
 }) => {
   return (
@@ -37,6 +39,7 @@ const FormButton: FC<IFormButtonProps> = ({
     >
       {icon}
       <ButtonText>{text}</ButtonText>
+      {iconEnd}
       {loading && <ButtonSpinner />}
     </Button>
   );

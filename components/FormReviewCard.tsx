@@ -32,7 +32,7 @@ const FormReviewCard: FC<IFormReviewCardProps> = ({
             {sub && <Text size="lg">{sub}</Text>}
           </VStack>
         </VStack>
-        <FormButton variant="link" text="Change" onPress={onChange} />
+        <FormButton size="md" variant="link" text="Change" onPress={onChange} />
       </HStack>
     </Card>
   );

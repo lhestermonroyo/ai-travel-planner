@@ -14,23 +14,8 @@ interface IFormOptionProps {
 
 const FormOption: FC<IFormOptionProps> = ({ item, variant, onPress }) => {
   return (
-    <TouchableOpacity
-      onPress={() =>
-        onPress({
-          name: item.name,
-          description: item.description,
-          pax: item.pax,
-        })
-      }
-    >
-      <Card
-        key={item.id}
-        variant={
-          // trip.tripForm.travelType?.name === item.name ? 'outline' : 'elevated'
-          variant
-        }
-        className="my-2 bg-white"
-      >
+    <TouchableOpacity onPress={() => onPress(item)}>
+      <Card key={item.id} variant={variant} className="my-1 bg-white">
         <HStack space="md" className="items-center justify-between">
           <VStack>
             <Text size="2xl" className="text-primary-500 font-medium">
