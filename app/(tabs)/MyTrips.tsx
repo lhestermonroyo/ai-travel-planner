@@ -38,9 +38,37 @@ const MyTrips: FC = () => {
         auth.user?.email
       );
 
+      const tripList = response.map((trip: any) => {
+        const startDate = new Date(trip.aiGenTrip.travelDates.start);
+        const endDate = new Date(trip.endDate);
+        const currentDate = new Date();
+
+        let status = 'UPCOMING';
+
+        if (startDate <= currentDate && endDate >= currentDate) {
+          status = 'ONGOING';
+        }
+
+        if (
+          startDate.getTime() - currentDate.getTime() <=
+          7 * 24 * 60 * 60 * 1000
+        ) {
+          status = 'FEW_DAYS_LEFT';
+        }
+
+        if (endDate < currentDate) {
+          status = 'PAST_TRIP';
+        }
+
+        return {
+          ...trip,
+          status,
+        };
+      });
+
       setTrips((prev: any) => ({
         ...prev,
-        tripList: response,
+        tripList,
       }));
     } catch (error) {
       console.log('fetchTrips [error]', error);

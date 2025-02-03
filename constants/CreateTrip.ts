@@ -55,7 +55,7 @@ Generate a travel plan based on the following trip details and preferences. Plea
 
 User's Travel Details and Preferences: {travelDetails}
 
-User's Coordinates: {coordinates}
+User's Current Location: {currLocation}
 
 Return a JSON object ONLY using this type: {
   destination: string;
@@ -101,12 +101,13 @@ Return a JSON object ONLY using this type: {
 }
 
 Currency Usage
-- Use the user's coordinates to determine the user's currency
+- Use the user's current location to determine the user's currency
 - Don't use the destination's currency
 - Apply it in the values of price, totalPrice, estimatedBudget
 
 For Flight Suggestions
-- Check what airlines are available in the user's coordinates
+- Determine if the user's location requires a plane or not, if not do not suggest flights
+- Check what airlines are available within the user's location
 - At least 5 flight suggestions
 - Suggest flight according to the user's trip details budget type
 - Suggest also the flights selected on the travel days
@@ -124,9 +125,11 @@ For Travel Itinerary
 - Consider also the season on suggesting places and activities
 - Apply breakfast, lunch and dinner on the itinerary and the place to eat
 - Ideal place to eat should be nearby or can be easily travelled from the previous activity place
+- Give at least 3 to 6 activities per day
 
 For Notes
-- If user has additional notes, please consider the user's additional notes on the itinerary
+- If user has additional notes, please prioritize the user's additional notes on the itinerary
+- Adjust the remaining itinerary based on the user's additional notes
 
 For Image/Logo URIs
 - Search in the web for the image/logo and add it in the imageUri/logoUri

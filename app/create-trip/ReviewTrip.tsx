@@ -12,14 +12,6 @@ import { VStack } from '@/components/ui/vstack';
 import { HStack } from '@/components/ui/hstack';
 import { Button } from '@/components/ui/button';
 import {
-  FormControl,
-  FormControlHelper,
-  FormControlHelperText,
-  FormControlLabel,
-  FormControlLabelText,
-} from '@/components/ui/form-control';
-import { Textarea, TextareaInput } from '@/components/ui/textarea';
-import {
   Toast,
   ToastDescription,
   ToastTitle,
@@ -38,6 +30,7 @@ import { AI_PROMPT } from '@/constants/CreateTrip';
 
 import FormButton from '@/components/FormButton';
 import FormReviewCard from '@/components/FormReviewCard';
+import FormTextArea from '@/components/FormTextArea';
 
 const SelectBudgetType = () => {
   const [loading, setLoading] = useState(false);
@@ -80,7 +73,7 @@ const SelectBudgetType = () => {
     const finalPromp = AI_PROMPT.replace(
       '{travelDetails}',
       JSON.stringify(travelDetails)
-    ).replace('{coordinates}', JSON.stringify(trip.form.currLocation));
+    ).replace('{currLocation}', auth?.user?.location);
 
     const prompRes = await chatSession.sendMessage(finalPromp);
     return JSON.parse(prompRes.response.text());
@@ -208,7 +201,19 @@ const SelectBudgetType = () => {
                   onChange={() => router.push('/create-trip/SelectBudgetType')}
                 />
               </VStack>
-              <FormControl size="md">
+              <FormTextArea
+                label="Additional Notes"
+                placeholder="Enter additional notes"
+                value={trip.form.notes}
+                onChangeText={text =>
+                  setTrip((prev: any) => ({
+                    ...prev,
+                    form: { ...prev.form, notes: text },
+                  }))
+                }
+                helperText="Compose something specific before generating your trip."
+              />
+              {/* <FormControl size="md">
                 <FormControlLabel>
                   <FormControlLabelText>Additional Notes</FormControlLabelText>
                 </FormControlLabel>
@@ -236,7 +241,7 @@ const SelectBudgetType = () => {
                     Compose something specific before generating your trip.
                   </FormControlHelperText>
                 </FormControlHelper>
-              </FormControl>
+              </FormControl> */}
             </VStack>
           </ScrollView>
 

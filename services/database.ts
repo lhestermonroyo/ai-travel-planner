@@ -4,6 +4,7 @@ import {
   doc,
   getDoc,
   getDocs,
+  orderBy,
   query,
   setDoc,
   where,
@@ -76,7 +77,11 @@ const saveTrip = async (email: string, tripDetails: any, aiGenTrip: any) => {
 
 const getTripsByEmail = async (email: string) => {
   try {
-    const q = query(collection(db, 'trips'), where('email', '==', email));
+    const q = query(
+      collection(db, 'trips'),
+      where('email', '==', email),
+      orderBy('createdAt', 'desc')
+    );
     const querySnapshot = await getDocs(q);
 
     return querySnapshot.docs.map(doc => {

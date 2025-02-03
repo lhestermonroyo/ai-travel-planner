@@ -12,6 +12,7 @@ import { useSetRecoilState } from 'recoil';
 import states from '@/states';
 
 import FormButton from './FormButton';
+import TripStatusBadge from './TripStatusBadge';
 
 const apiKey: any = process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY;
 
@@ -20,11 +21,11 @@ interface ITripCardProps {
 }
 
 const TripCard: FC<ITripCardProps> = ({ item }) => {
-  const { createdAt, tripDetails, aiGenTrip } = item;
-
-  const setTrip = useSetRecoilState(states.trip);
+  const { createdAt, status, tripDetails, aiGenTrip } = item;
 
   const [imageUri, setImageUri] = useState('');
+
+  const setTrip = useSetRecoilState(states.trip);
 
   const router = useRouter();
 
@@ -72,18 +73,28 @@ const TripCard: FC<ITripCardProps> = ({ item }) => {
           source={{ uri: imageUri }}
         />
         <VStack space="md">
-          <Text size="md" className="text-secondary-900">
-            {format(createdAt, 'MMM. d, yyyy - hh:mm a')}
-          </Text>
-          <Text size="2xl" className="font-medium">
-            {tripDetails.destination.description}
-          </Text>
+          <HStack space="xs" className="items-center">
+            <Ionicons name="time-outline" size={14} />
+            <Text size="md" className="text-secondary-900">
+              {format(createdAt, 'MMM. d, yyyy - hh:mm a')}
+            </Text>
+          </HStack>
+
+          <VStack>
+            <Text size="2xl" className="font-medium">
+              {tripDetails.destination.description}
+            </Text>
+            <Text size="lg">
+              {format(aiGenTrip.travelDates.start, 'MMM. d, yyyy')} -{' '}
+              {format(aiGenTrip.travelDates.end, 'MMM. d, yyyy')} (
+              {aiGenTrip.noOfDays} days)
+            </Text>
+            <HStack>
+              <TripStatusBadge status={status} />
+            </HStack>
+          </VStack>
         </VStack>
-        <Text size="lg">
-          Travel Dates: {format(aiGenTrip.travelDates.start, 'MMM. d, yyyy')} -{' '}
-          {format(aiGenTrip.travelDates.end, 'MMM. d, yyyy')} (
-          {aiGenTrip.noOfDays} days)
-        </Text>
+
         <HStack>
           <FormButton
             variant="link"

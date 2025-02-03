@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { SafeAreaView, ScrollView } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
+import * as Linking from 'expo-linking';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { Text } from '@/components/ui/text';
@@ -142,7 +143,24 @@ const Profile = () => {
     }
   };
 
-  console.log('auth', auth);
+  const handleSocialLink = (url: string) => {
+    const canOpen = Linking.canOpenURL(url);
+
+    if (!canOpen) {
+      handleToast(
+        'Error',
+        'Failed to open. Please input a valid link.',
+        'error'
+      );
+      return;
+    }
+
+    if (!url.includes('https://www.')) {
+      url = `https://www.${url}`;
+    }
+
+    Linking.openURL(url);
+  };
 
   if (!auth?.user) {
     return null;
@@ -218,7 +236,12 @@ const Profile = () => {
 
                 <HStack space="2xl" className="justify-center">
                   {auth?.user.socials?.facebook && (
-                    <Button variant="link">
+                    <Button
+                      variant="link"
+                      onPress={() =>
+                        handleSocialLink(auth?.user.socials?.facebook)
+                      }
+                    >
                       <Ionicons
                         name="logo-facebook"
                         size={32}
@@ -228,13 +251,23 @@ const Profile = () => {
                   )}
 
                   {auth?.user.socials?.twitter && (
-                    <Button variant="link">
+                    <Button
+                      variant="link"
+                      onPress={() =>
+                        handleSocialLink(auth?.user.socials?.twitter)
+                      }
+                    >
                       <Ionicons name="logo-twitter" size={32} color="#1DA1F2" />
                     </Button>
                   )}
 
                   {auth?.user.socials?.instagram && (
-                    <Button variant="link">
+                    <Button
+                      variant="link"
+                      onPress={() =>
+                        handleSocialLink(auth?.user.socials?.instagram)
+                      }
+                    >
                       <Ionicons
                         name="logo-instagram"
                         size={32}
@@ -244,19 +277,34 @@ const Profile = () => {
                   )}
 
                   {auth?.user.socials?.tiktok && (
-                    <Button variant="link">
+                    <Button
+                      variant="link"
+                      onPress={() =>
+                        handleSocialLink(auth?.user.socials?.tiktok)
+                      }
+                    >
                       <Ionicons name="logo-tiktok" size={32} color="#000" />
                     </Button>
                   )}
 
                   {auth?.user.socials?.youtube && (
-                    <Button variant="link">
+                    <Button
+                      variant="link"
+                      onPress={() =>
+                        handleSocialLink(auth?.user.socials?.youtube)
+                      }
+                    >
                       <Ionicons name="logo-youtube" size={32} color="#FF0000" />
                     </Button>
                   )}
 
                   {auth?.user.socials?.website && (
-                    <Button variant="link">
+                    <Button
+                      variant="link"
+                      onPress={() =>
+                        handleSocialLink(auth?.user.socials?.website)
+                      }
+                    >
                       <Ionicons name="globe" size={32} color="#000" />
                     </Button>
                   )}
@@ -265,18 +313,20 @@ const Profile = () => {
             </Card>
             <Card className="py-6">
               <ProfileButton
-                title="Share Socials"
-                onPress={() => router.push('/update-personal-info/ShareSocial')}
-              />
-              <Divider className="my-5 bg-secondary-200" />
-              <ProfileButton
                 title="Update Personal Info"
                 onPress={() => router.push('/update-personal-info')}
               />
               <Divider className="my-5 bg-secondary-200" />
               <ProfileButton
+                title="Share Socials"
+                onPress={() => router.push('/update-personal-info/ShareSocial')}
+              />
+              <Divider className="my-5 bg-secondary-200" />
+              <ProfileButton
                 title="Account Settings"
-                onPress={() => router.push('/update-personal-info')}
+                onPress={() =>
+                  router.push('/update-personal-info/AccountSettings')
+                }
               />
             </Card>
 

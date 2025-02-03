@@ -19,36 +19,25 @@ import services from '@/services';
 
 import FormButton from '@/components/FormButton';
 import FormInput from '@/components/FormInput';
+import { EyeIcon, EyeOffIcon } from '@/components/ui/icon';
 
-const ShareSocial = () => {
+const AccountSettings = () => {
   const [values, setValues] = useState({
-    facebook: '',
-    twitter: '',
-    instagram: '',
-    tiktok: '',
-    youtube: '',
-    website: '',
+    oldPassword: '',
+    newPassword: '',
   });
-
+  const [formErrors, setFormErrors] = useState({
+    oldPassword: '',
+    newPassword: '',
+  }) as any;
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showOldPassword, setShowOldPassword] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
   const [auth, setAuth] = useRecoilState(states.auth);
 
   const router = useRouter();
   const toast = useToast();
-
-  useEffect(() => {
-    if (auth?.user.socials) {
-      setValues({
-        facebook: auth.user.socials?.facebook,
-        twitter: auth.user.socials?.twitter,
-        instagram: auth.user.socials?.instagram,
-        tiktok: auth.user.socials?.tiktok,
-        youtube: auth.user.socials?.youtube,
-        website: auth.user.socials?.website,
-      });
-    }
-  }, []);
 
   const handleToast = (title: string, description: string, type: any) => {
     toast.show({
@@ -75,25 +64,10 @@ const ShareSocial = () => {
     try {
       setSubmitting(true);
 
-      const payload = {
-        ...auth.user,
-        socials: {
-          ...values,
-        },
-      };
-
-      await services.database.updateUser(payload).then(() => {
-        setAuth((prev: any) => ({
-          ...prev,
-          user: payload,
-        }));
-        handleToast(
-          'Socials Updated',
-          'Your socials has been updated.',
-          'success'
-        );
-        router.push('/Profile');
-      });
+      await services.auth.changePassword(
+        values.oldPassword,
+        values.newPassword
+      );
     } catch (error) {
       console.log('[handleSubmit] error', error);
       handleToast('Error', 'An error occurred. Please try again.', 'error');
@@ -114,7 +88,7 @@ const ShareSocial = () => {
               <Ionicons name="arrow-back" size={24} color="#3b82f6" />
             </Button>
             <Text size="3xl" className="font-medium">
-              Share Socials
+              Account Settings
             </Text>
           </HStack>
 
@@ -122,51 +96,33 @@ const ShareSocial = () => {
             <VStack className="flex-1">
               <VStack space="3xl">
                 <FormInput
-                  type="text"
-                  label="Facebook"
-                  placeholder="Enter your facebook link"
-                  value={values.facebook}
-                  onChangeText={text => handleChange('facebook', text)}
+                  type={showNewPassword ? 'text' : 'password'}
+                  label="Old Password"
+                  placeholder="Enter your old password"
+                  value={values.newPassword}
+                  onChangeText={text => handleChange('newPassword', text)}
+                  rightIcon={showNewPassword ? EyeIcon : EyeOffIcon}
+                  onPressRightIcon={() => setShowNewPassword(!showNewPassword)}
+                  errorMessage={formErrors.newPassword}
                 />
 
                 <FormInput
-                  type="text"
-                  label="Twitter"
-                  placeholder="Enter your twitter link"
-                  value={values.twitter}
-                  onChangeText={text => handleChange('twitter', text)}
-                />
-
-                <FormInput
-                  type="text"
-                  label="Instagram"
-                  placeholder="Enter your instagram link"
-                  value={values.instagram}
-                  onChangeText={text => handleChange('instagram', text)}
-                />
-
-                <FormInput
-                  type="text"
-                  label="Tiktok"
-                  placeholder="Enter your tiktok link"
-                  value={values.tiktok}
-                  onChangeText={text => handleChange('tiktok', text)}
-                />
-
-                <FormInput
-                  type="text"
-                  label="Youtube"
-                  placeholder="Enter your youtube link"
-                  value={values.youtube}
-                  onChangeText={text => handleChange('youtube', text)}
-                />
-
-                <FormInput
-                  type="text"
-                  label="Website"
-                  placeholder="Enter your website link"
-                  value={values.website}
-                  onChangeText={text => handleChange('website', text)}
+                  type={showOldPassword ? 'text' : 'password'}
+                  label="New Password"
+                  placeholder="Enter new password"
+                  value={values.oldPassword}
+                  onChangeText={text => handleChange('oldPassword', text)}
+                  rightIcon={showOldPassword ? EyeIcon : EyeOffIcon}
+                  onPressRightIcon={() => setShowOldPassword(!showOldPassword)}
+                  onBlur={() =>
+                    values.oldPassword === values.newPassword &&
+                    setFormErrors({
+                      ...formErrors,
+                      oldPassword: 'Passwords must not be the same.',
+                    })
+                  }
+                  helperText="New password must not be the same as your old password."
+                  errorMessage={formErrors.oldPassword}
                 />
               </VStack>
             </VStack>
@@ -182,4 +138,4 @@ const ShareSocial = () => {
   );
 };
 
-export default ShareSocial;
+export default AccountSettings;

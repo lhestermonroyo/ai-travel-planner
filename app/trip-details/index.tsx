@@ -1,5 +1,6 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { KeyboardAvoidingView, SafeAreaView, ScrollView } from 'react-native';
+import * as Linking from 'expo-linking';
 import { useRouter } from 'expo-router';
 import 'react-native-get-random-values';
 import { Ionicons } from '@expo/vector-icons';
@@ -10,7 +11,7 @@ import { Button } from '@/components/ui/button';
 import { Divider } from '@/components/ui/divider';
 import { Card } from '@/components/ui/card';
 import { Box } from '@/components/ui/box';
-import { Badge } from '@/components/ui/badge';
+import { Badge, BadgeText } from '@/components/ui/badge';
 import {
   Accordion,
   AccordionContent,
@@ -30,6 +31,13 @@ import { useRecoilState } from 'recoil';
 import states from '@/states';
 
 import FormButton from '@/components/FormButton';
+import {
+  Toast,
+  ToastDescription,
+  ToastTitle,
+  useToast,
+} from '@/components/ui/toast';
+import TripStatusBadge from '@/components/TripStatusBadge';
 
 const apiKey: any = process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY;
 
@@ -39,10 +47,11 @@ const TripDetails = () => {
 
   const [trip, setTrip] = useRecoilState(states.trip);
   const {
-    tripItem: { createdAt, tripDetails, aiGenTrip },
+    tripItem: { createdAt, status, tripDetails, aiGenTrip },
   } = trip;
 
   const router = useRouter();
+  const toast = useToast();
 
   useEffect(() => {
     if (!trip.tripItem) {
@@ -52,6 +61,23 @@ const TripDetails = () => {
 
     getPhotoReference();
   }, []);
+
+  const handleToast = (title: string, description: string, type: any) => {
+    toast.show({
+      placement: 'top',
+      duration: 5000,
+      render: ({ id }) => {
+        const uniqueToastId = 'toast-' + id;
+
+        return (
+          <Toast nativeID={uniqueToastId} action={type} variant="outline">
+            <ToastTitle>{title}</ToastTitle>
+            <ToastDescription>{description}</ToastDescription>
+          </Toast>
+        );
+      },
+    });
+  };
 
   const getPhotoReference = async () => {
     try {
@@ -72,6 +98,21 @@ const TripDetails = () => {
     } catch (error) {
       console.log('getPhotoReference [error]', error);
     }
+  };
+
+  const handleLinkPress = (url: string) => {
+    const canOpen = Linking.canOpenURL(url);
+
+    if (!canOpen) {
+      handleToast(
+        'Error',
+        'Failed to open. Please input a valid link.',
+        'error'
+      );
+      return;
+    }
+
+    Linking.openURL(url);
   };
 
   return (
@@ -171,9 +212,13 @@ const TripDetails = () => {
                 <AccordionContent className="px-0 mb-4">
                   <VStack space="lg">
                     <VStack space="xs">
-                      <Text size="md" className="text-secondary-900">
-                        🗓️ Travel Dates
-                      </Text>
+                      <HStack space="sm">
+                        <Text size="md" className="text-secondary-900">
+                          🗓️ Travel Dates
+                        </Text>
+                        <TripStatusBadge status={status} />
+                      </HStack>
+
                       <VStack>
                         <Text
                           size="xl"
@@ -422,6 +467,9 @@ const TripDetails = () => {
                                 <FormButton
                                   variant="link"
                                   text="Book Here"
+                                  onPress={() =>
+                                    handleLinkPress(item.bookingLink)
+                                  }
                                   iconEnd={
                                     <Ionicons
                                       name="chevron-forward"
@@ -429,7 +477,6 @@ const TripDetails = () => {
                                       size={24}
                                     />
                                   }
-                                  // onPress={() => router.push('/flight-details')}
                                 />
                               </HStack>
                             </VStack>
@@ -511,7 +558,7 @@ const TripDetails = () => {
                               <HStack space="xs" className="items-center">
                                 <Ionicons name="pricetag-outline" size={14} />
                                 <Text size="md" className="text-secondary-900">
-                                  {item.price} per night
+                                  {item.price}
                                 </Text>
                                 <Text>|</Text>
                                 <Ionicons name="star-outline" size={14} />
@@ -530,7 +577,11 @@ const TripDetails = () => {
                                       size={24}
                                     />
                                   }
-                                  // onPress={() => router.push('/flight-details')}
+                                  onPress={() => {
+                                    handleLinkPress(
+                                      `https://maps.google.com/?q=${item.geoLocation?.lat},${item.geoLocation?.lng}`
+                                    );
+                                  }}
                                 />
                                 <FormButton
                                   variant="link"
@@ -542,7 +593,9 @@ const TripDetails = () => {
                                       size={24}
                                     />
                                   }
-                                  // onPress={() => router.push('/flight-details')}
+                                  onPress={() =>
+                                    handleLinkPress(item.bookingLink)
+                                  }
                                 />
                               </HStack>
                             </VStack>

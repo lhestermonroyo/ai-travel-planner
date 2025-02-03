@@ -1,8 +1,10 @@
 import {
   createUserWithEmailAndPassword,
+  reauthenticateWithCredential,
   sendEmailVerification,
   signInWithEmailAndPassword,
   signOut,
+  updatePassword,
 } from 'firebase/auth';
 import { auth } from './firebase';
 
@@ -44,8 +46,31 @@ export const emailVerification = async (user: any) => {
   }
 };
 
+export const changePassword = async (
+  oldPassword: string,
+  newPassword: string
+) => {
+  try {
+    const user = auth().currentUser;
+    const credentials = auth.EmailAuthProvider.credential(
+      user.email,
+      oldPassword
+    );
+
+    await reauthenticateWithCredential(auth.currentUser, credentials).then(
+      res => {
+        console.log('Reauthenticated!', res);
+      }
+    );
+  } catch (error) {
+    console.log('changePassword [error]', error);
+    throw error;
+  }
+};
+
 export default {
   signUp,
   logIn,
+  changePassword,
   emailVerification,
 };
