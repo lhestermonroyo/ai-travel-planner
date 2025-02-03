@@ -4,6 +4,7 @@ const initialState: any = {
   isAuth: false,
   loggingOut: false,
   user: null,
+  form: null,
 };
 
 const AUTH_STATE = atom({

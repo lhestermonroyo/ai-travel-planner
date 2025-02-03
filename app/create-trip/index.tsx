@@ -43,8 +43,8 @@ const CreateTrip = () => {
 
     setTrip((prev: any) => ({
       ...prev,
-      tripForm: {
-        ...prev.tripForm,
+      form: {
+        ...prev.form,
         currLocation: location,
       },
     }));
@@ -53,7 +53,7 @@ const CreateTrip = () => {
   const handleBack = () => {
     setTrip((prev: any) => ({
       ...prev,
-      tripForm: {
+      form: {
         destination: null,
         travelDates: {
           start: '',
@@ -73,8 +73,8 @@ const CreateTrip = () => {
   ) => {
     setTrip((prev: any) => ({
       ...prev,
-      tripForm: {
-        ...prev.tripForm,
+      form: {
+        ...prev.form,
         destination: {
           placeId: data.place_id,
           description: data.description,
@@ -128,7 +128,7 @@ const CreateTrip = () => {
             }}
           />
           <FormButton
-            disabled={!trip.tripForm.destination}
+            disabled={!trip.form.destination}
             text="Next"
             onPress={() => router.push('/create-trip/SelectDates')}
           />

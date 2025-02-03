@@ -40,7 +40,7 @@ const FormButton: FC<IFormButtonProps> = ({
       {icon}
       <ButtonText>{text}</ButtonText>
       {iconEnd}
-      {loading && <ButtonSpinner />}
+      {loading && <ButtonSpinner className="text-white" />}
     </Button>
   );
 };

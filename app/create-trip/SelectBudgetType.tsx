@@ -25,8 +25,8 @@ const SelectBudgetType = () => {
 
     setTrip((prev: any) => ({
       ...prev,
-      tripForm: {
-        ...prev.tripForm,
+      form: {
+        ...prev.form,
         budgetType: {
           name,
           description,
@@ -55,7 +55,7 @@ const SelectBudgetType = () => {
                 <FormOption
                   item={item}
                   variant={
-                    trip.tripForm.budgetType?.name === item.name
+                    trip.form.budgetType?.name === item.name
                       ? 'outline'
                       : 'elevated'
                   }
@@ -66,7 +66,7 @@ const SelectBudgetType = () => {
           </VStack>
 
           <FormButton
-            disabled={!trip.tripForm.budgetType}
+            disabled={!trip.form.budgetType}
             text="Review Trip"
             onPress={() => router.push('/create-trip/ReviewTrip')}
           />

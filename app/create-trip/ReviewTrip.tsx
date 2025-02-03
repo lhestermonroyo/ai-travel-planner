@@ -67,20 +67,20 @@ const SelectBudgetType = () => {
 
   const handleAIPrompt = async () => {
     const travelDetails = {
-      destination: trip.tripForm.destination.description,
+      destination: trip.form.destination.description,
       travelDates: {
-        start: trip.tripForm.travelDates.start,
-        end: trip.tripForm.travelDates.end,
+        start: trip.form.travelDates.start,
+        end: trip.form.travelDates.end,
       },
-      travelType: trip.tripForm.travelType,
-      budgetType: trip.tripForm.budgetType,
-      notes: trip.tripForm.notes,
+      travelType: trip.form.travelType,
+      budgetType: trip.form.budgetType,
+      notes: trip.form.notes,
     };
 
     const finalPromp = AI_PROMPT.replace(
       '{travelDetails}',
       JSON.stringify(travelDetails)
-    ).replace('{coordinates}', JSON.stringify(trip.tripForm.currLocation));
+    ).replace('{coordinates}', JSON.stringify(trip.form.currLocation));
 
     const prompRes = await chatSession.sendMessage(finalPromp);
     return JSON.parse(prompRes.response.text());
@@ -95,14 +95,14 @@ const SelectBudgetType = () => {
       if (generatedTrip) {
         const response = await services.database.saveTrip(
           auth.user.email,
-          trip.tripForm,
+          trip.form,
           generatedTrip
         );
 
         if (response) {
           setTrip((prev: any) => ({
             ...prev,
-            tripForm: {
+            form: {
               destination: null,
               travelDates: {
                 start: '',
@@ -174,41 +174,37 @@ const SelectBudgetType = () => {
               <VStack space="sm">
                 <FormReviewCard
                   title="📍 Destination"
-                  name={trip.tripForm.destination?.description}
+                  name={trip.form.destination?.description}
                   onChange={() => router.push('/create-trip')}
                 />
 
-                {trip.tripForm.travelDates.start &&
-                  trip.tripForm.travelDates.end && (
-                    <FormReviewCard
-                      title="🗓️ Travel Dates"
-                      name={`${format(
-                        trip.tripForm.travelDates.start,
-                        'MMM. dd, yyyy'
-                      )} - ${format(
-                        trip.tripForm.travelDates.end,
-                        'MMM. dd, yyyy'
-                      )}`}
-                      sub={`${
-                        Math.abs(
-                          trip.tripForm.travelDates.end.getTime() -
-                            trip.tripForm.travelDates.start.getTime()
-                        ) /
-                        (1000 * 60 * 60 * 24)
-                      } days`}
-                      onChange={() => router.push('/create-trip/SelectDates')}
-                    />
-                  )}
+                {trip.form.travelDates.start && trip.form.travelDates.end && (
+                  <FormReviewCard
+                    title="🗓️ Travel Dates"
+                    name={`${format(
+                      trip.form.travelDates.start,
+                      'MMM. dd, yyyy'
+                    )} - ${format(trip.form.travelDates.end, 'MMM. dd, yyyy')}`}
+                    sub={`${
+                      Math.abs(
+                        trip.form.travelDates.end.getTime() -
+                          trip.form.travelDates.start.getTime()
+                      ) /
+                      (1000 * 60 * 60 * 24)
+                    } days`}
+                    onChange={() => router.push('/create-trip/SelectDates')}
+                  />
+                )}
 
                 <FormReviewCard
                   title="🧳 Travel Type"
-                  name={trip.tripForm.travelType?.name}
+                  name={trip.form.travelType?.name}
                   onChange={() => router.push('/create-trip/SelectTravelType')}
                 />
 
                 <FormReviewCard
                   title="💸 Budget Type"
-                  name={trip.tripForm.budgetType?.name}
+                  name={trip.form.budgetType?.name}
                   onChange={() => router.push('/create-trip/SelectBudgetType')}
                 />
               </VStack>
@@ -225,11 +221,11 @@ const SelectBudgetType = () => {
                 >
                   <TextareaInput
                     placeholder="Enter additional notes"
-                    value={trip.tripForm.notes}
+                    value={trip.form.notes}
                     onChange={text =>
                       setTrip((prev: any) => ({
                         ...prev,
-                        tripForm: { ...prev.tripForm, notes: text },
+                        form: { ...prev.form, notes: text },
                       }))
                     }
                   />

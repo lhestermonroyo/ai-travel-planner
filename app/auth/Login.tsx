@@ -92,6 +92,10 @@ const Login = () => {
             },
             isAuth: true,
           });
+          setValues({
+            email: '',
+            password: '',
+          });
 
           router.push('/(tabs)/MyTrips');
         } else {

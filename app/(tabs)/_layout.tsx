@@ -4,11 +4,8 @@ import { Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
 
 const TabLayout = () => {
-  const colorScheme = useColorScheme();
-
   return (
     <Tabs
       screenOptions={{
@@ -27,7 +24,7 @@ const TabLayout = () => {
         options={{
           title: 'My Trips',
           tabBarIcon: ({ color }) => (
-            <Ionicons name="location-sharp" size={28} color={color} />
+            <Ionicons name="trail-sign-outline" size={28} color={color} />
           ),
         }}
       />
@@ -36,7 +33,7 @@ const TabLayout = () => {
         options={{
           title: 'Discover',
           tabBarIcon: ({ color }) => (
-            <Ionicons name="compass-sharp" size={28} color={color} />
+            <Ionicons name="compass-outline" size={28} color={color} />
           ),
         }}
       />
@@ -45,7 +42,7 @@ const TabLayout = () => {
         options={{
           title: 'Profile',
           tabBarIcon: ({ color }) => (
-            <Ionicons name="person-circle-sharp" size={28} color={color} />
+            <Ionicons name="person-circle-outline" size={28} color={color} />
           ),
         }}
       />

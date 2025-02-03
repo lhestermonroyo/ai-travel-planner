@@ -77,18 +77,32 @@ const TripDetails = () => {
   return (
     <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
       <SafeAreaView style={{ flex: 1 }}>
-        <VStack className="my-8 px-4 flex-1" space="lg">
-          <HStack space="md" className="items-center">
-            <Button
-              size="xl"
-              variant="link"
-              onPress={() => router.push('/(tabs)/MyTrips')}
-            >
-              <Ionicons name="arrow-back" size={24} color="#3b82f6" />
-            </Button>
-            <Text size="3xl" className="font-medium">
-              Trip Preview
-            </Text>
+        <VStack className="pt-8 px-4 flex-1" space="lg">
+          <HStack space="md" className="items-center justify-between">
+            <HStack space="md" className="items-center">
+              <Button
+                size="xl"
+                variant="link"
+                onPress={() => router.push('/(tabs)/MyTrips')}
+              >
+                <Ionicons name="arrow-back" size={24} color="#3b82f6" />
+              </Button>
+              <Text size="3xl" className="font-medium">
+                Trip Preview
+              </Text>
+            </HStack>
+            <HStack space="2xl">
+              <Button variant="link">
+                <Ionicons name="star-outline" size={32} color="#3b82f6" />
+              </Button>
+              <Button variant="link">
+                <Ionicons
+                  name="ellipsis-vertical-outline"
+                  size={32}
+                  color="#3b82f6"
+                />
+              </Button>
+            </HStack>
           </HStack>
 
           <ScrollView showsVerticalScrollIndicator={false}>
@@ -156,7 +170,7 @@ const TripDetails = () => {
                 </AccordionHeader>
                 <AccordionContent className="px-0 mb-4">
                   <VStack space="lg">
-                    <VStack space="sm">
+                    <VStack space="xs">
                       <Text size="md" className="text-secondary-900">
                         🗓️ Travel Dates
                       </Text>
@@ -172,7 +186,7 @@ const TripDetails = () => {
                       </VStack>
                     </VStack>
 
-                    <VStack space="sm">
+                    <VStack space="xs">
                       <Text size="md" className="text-secondary-900">
                         🧳 Travel Type
                       </Text>
@@ -186,7 +200,7 @@ const TripDetails = () => {
                       </VStack>
                     </VStack>
 
-                    <VStack space="sm">
+                    <VStack space="xs">
                       <Text size="md" className="text-secondary-900">
                         💸 Budget Type
                       </Text>
@@ -196,6 +210,22 @@ const TripDetails = () => {
                           className="text-primary-500 font-medium"
                         >
                           {tripDetails.budgetType.name}
+                        </Text>
+                      </VStack>
+                    </VStack>
+
+                    <VStack space="xs">
+                      <Text size="md" className="text-secondary-900">
+                        📝 Notes
+                      </Text>
+                      <VStack>
+                        <Text
+                          size="xl"
+                          className="text-primary-500 font-medium"
+                        >
+                          {tripDetails.notes
+                            ? tripDetails.notes
+                            : 'No additional notes'}
                         </Text>
                       </VStack>
                     </VStack>

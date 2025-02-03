@@ -113,6 +113,12 @@ const SignUp = () => {
           'Your account has been created successfully! Please verify your email first to login.',
           'success'
         );
+        setValues({
+          fullname: '',
+          email: '',
+          password: '',
+          confPassword: '',
+        });
         router.push('/auth/Login');
       }
     } catch (error) {

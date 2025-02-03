@@ -24,10 +24,10 @@ const SelectDates = () => {
     if (type === 'START_DATE') {
       setTrip((prev: any) => ({
         ...prev,
-        tripForm: {
-          ...prev.tripForm,
+        form: {
+          ...prev.form,
           travelDates: {
-            ...prev.tripForm.travelDates,
+            ...prev.form.travelDates,
             start: date,
           },
         },
@@ -35,10 +35,10 @@ const SelectDates = () => {
     } else {
       setTrip((prev: any) => ({
         ...prev,
-        tripForm: {
-          ...prev.tripForm,
+        form: {
+          ...prev.form,
           travelDates: {
-            ...prev.tripForm.travelDates,
+            ...prev.form.travelDates,
             end: date,
           },
         },
@@ -49,8 +49,8 @@ const SelectDates = () => {
   const handleResetDates = () => {
     setTrip((prev: any) => ({
       ...prev,
-      tripForm: {
-        ...prev.tripForm,
+      form: {
+        ...prev.form,
         travelDates: {
           start: '',
           end: '',
@@ -83,44 +83,43 @@ const SelectDates = () => {
               selectedRangeStyle={{ backgroundColor: '#3b82f6' }}
               selectedDayTextColor="#fff"
               todayBackgroundColor="#333"
-              selectedStartDate={trip.tripForm.travelDates.start}
-              selectedEndDate={trip.tripForm.travelDates.end}
+              selectedStartDate={trip.form.travelDates.start}
+              selectedEndDate={trip.form.travelDates.end}
               onDateChange={handleSelectDates}
             />
 
-            {trip.tripForm.travelDates.start &&
-              trip.tripForm.travelDates.end && (
-                <HStack className="justify-between items-center">
-                  <VStack>
-                    <Text size="md" className="text-secondary-900">
-                      Selected dates
-                    </Text>
-                    <Text size="xl" className="text-primary-500 font-medium">
-                      {format(trip.tripForm.travelDates.start, 'MMM. dd, yyyy')}{' '}
-                      - {format(trip.tripForm.travelDates.end, 'MMM. dd, yyyy')}
-                    </Text>
-                    <Text size="lg">
-                      {Math.abs(
-                        trip.tripForm.travelDates.end.getTime() -
-                          trip.tripForm.travelDates.start.getTime()
-                      ) /
-                        (1000 * 60 * 60 * 24)}{' '}
-                      days
-                    </Text>
-                  </VStack>
-                  <FormButton
-                    size="md"
-                    variant="outline"
-                    text="Reset"
-                    onPress={handleResetDates}
-                  />
-                </HStack>
-              )}
+            {trip.form.travelDates.start && trip.form.travelDates.end && (
+              <HStack className="justify-between items-center">
+                <VStack>
+                  <Text size="md" className="text-secondary-900">
+                    Selected dates
+                  </Text>
+                  <Text size="xl" className="text-primary-500 font-medium">
+                    {format(trip.form.travelDates.start, 'MMM. dd, yyyy')} -{' '}
+                    {format(trip.form.travelDates.end, 'MMM. dd, yyyy')}
+                  </Text>
+                  <Text size="lg">
+                    {Math.abs(
+                      trip.form.travelDates.end.getTime() -
+                        trip.form.travelDates.start.getTime()
+                    ) /
+                      (1000 * 60 * 60 * 24)}{' '}
+                    days
+                  </Text>
+                </VStack>
+                <FormButton
+                  size="md"
+                  variant="outline"
+                  text="Reset"
+                  onPress={handleResetDates}
+                />
+              </HStack>
+            )}
           </VStack>
 
           <FormButton
             disabled={
-              !trip.tripForm.travelDates.start || !trip.tripForm.travelDates.end
+              !trip.form.travelDates.start || !trip.form.travelDates.end
             }
             text="Next"
             onPress={() => router.push('/create-trip/SelectTravelType')}

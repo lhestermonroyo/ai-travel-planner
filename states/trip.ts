@@ -1,7 +1,7 @@
 import { atom } from 'recoil';
 
 const initialState: any = {
-  tripForm: {
+  form: {
     destination: null,
     travelDates: {
       start: '',

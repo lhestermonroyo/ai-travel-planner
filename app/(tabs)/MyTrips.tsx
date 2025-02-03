@@ -5,9 +5,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { VStack } from '@/components/ui/vstack';
 import { Text } from '@/components/ui/text';
-import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
 import { HStack } from '@/components/ui/hstack';
-import { Card } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
 import states from '@/states';
@@ -16,6 +15,7 @@ import services from '@/services';
 import FormButton from '@/components/FormButton';
 import MyTripsEmpty from '@/components/MyTripsEmpty';
 import TripCard from '@/components/TripCard';
+import MyTripsList from '@/components/MyTripsList';
 
 const MyTrips: FC = () => {
   const [loading, setLoading] = useState(true);
@@ -49,18 +49,30 @@ const MyTrips: FC = () => {
     }
   };
 
+  const handleSearch = () => {
+    // TODO: Implement search functionality
+  };
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <VStack className="mt-8 mb-16 px-4 flex-1" space="lg">
-        <HStack>
+      <VStack className="pt-8 pb-12 px-4 flex-1" space="lg">
+        <HStack className=" justify-between">
           <VStack space="xs">
             <Text size="4xl" className="font-medium">
-              Hey, {auth.user?.fullname}!
+              Hey, {auth.user?.fullname.split(' ')[0]}!
             </Text>
             <Text size="xl" className="text-primary-500">
               Where would you like to go next?
             </Text>
           </VStack>
+          <Button variant="link">
+            <Ionicons
+              name="search"
+              size={32}
+              color="#3b82f6"
+              onPress={handleSearch}
+            />
+          </Button>
         </HStack>
 
         <MyTripsList loading={loading}>
@@ -76,10 +88,10 @@ const MyTrips: FC = () => {
                 <FlatList
                   data={trips.tripList}
                   showsVerticalScrollIndicator={false}
+                  keyExtractor={item => item.id}
                   renderItem={({ item }) => (
                     <TripCard key={item.id} item={item} />
                   )}
-                  keyExtractor={item => item.id}
                 />
               </Fragment>
             ) : (
@@ -90,40 +102,6 @@ const MyTrips: FC = () => {
       </VStack>
     </SafeAreaView>
   );
-};
-
-interface IMyTripsListProps {
-  loading: boolean;
-  children: React.ReactElement;
-}
-
-const MyTripsList: FC<IMyTripsListProps> = ({ loading, children }) => {
-  if (loading) {
-    return (
-      <Fragment>
-        <Skeleton variant="rounded" className="h-[50px]" />
-        <FlatList
-          data={[1, 2]}
-          showsVerticalScrollIndicator={false}
-          renderItem={({ item }) => (
-            <Card key={item} className="p-4 my-1">
-              <VStack space="lg">
-                <Skeleton variant="rounded" className="h-[200px]" />
-                <VStack space="md">
-                  <SkeletonText _lines={1} className="h-6 w-3/5" />
-                  <SkeletonText _lines={1} className="h-10" />
-                  <SkeletonText _lines={1} className="h-6 w-3/5" />
-                  <SkeletonText _lines={1} className="h-12 w-2/5" />
-                </VStack>
-              </VStack>
-            </Card>
-          )}
-        />
-      </Fragment>
-    );
-  }
-
-  return children;
 };
 
 export default MyTrips;

@@ -23,6 +23,22 @@ const saveUser = async (user: any) => {
   }
 };
 
+const updateUser = async (user: any) => {
+  try {
+    await setDoc(
+      doc(db, 'users', user.email),
+      {
+        ...user,
+        updatedAt: new Date(),
+      },
+      { merge: true }
+    );
+  } catch (error) {
+    console.log('updateUser [error]', error);
+    throw error;
+  }
+};
+
 const getUser = async (email: string) => {
   try {
     const docRef = doc(db, 'users', email);
@@ -77,6 +93,7 @@ const getTripsByEmail = async (email: string) => {
 
 export default {
   saveUser,
+  updateUser,
   getUser,
   saveTrip,
   getTripsByEmail,
