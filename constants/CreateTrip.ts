@@ -71,7 +71,7 @@ Return a JSON object ONLY using this type: {
     activities: {
       name: string;
       description: string;
-      time: string; // e.g. 9:00 AM - 12:00 PM
+      time: string; // e.g. 9:00 AM - 12:30 PM
       location: string;
     }[];
   }[];

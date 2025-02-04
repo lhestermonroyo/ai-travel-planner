@@ -133,9 +133,14 @@ const TripDetails = () => {
               </Text>
             </HStack>
             <HStack space="2xl">
-              <Button variant="link">
-                <Ionicons name="star-outline" size={32} color="#3b82f6" />
-              </Button>
+              {(status === 'PAST_TRIP' || status === 'ONGOING') && (
+                <Button
+                  variant="link"
+                  onPress={() => router.push('/trip-details/TripRating')}
+                >
+                  <Ionicons name="star-outline" size={32} color="#3b82f6" />
+                </Button>
+              )}
               <Button variant="link">
                 <Ionicons
                   name="ellipsis-vertical-outline"

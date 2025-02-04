@@ -213,35 +213,6 @@ const SelectBudgetType = () => {
                 }
                 helperText="Compose something specific before generating your trip."
               />
-              {/* <FormControl size="md">
-                <FormControlLabel>
-                  <FormControlLabelText>Additional Notes</FormControlLabelText>
-                </FormControlLabel>
-
-                <Textarea
-                  size="lg"
-                  isReadOnly={false}
-                  isInvalid={false}
-                  isDisabled={false}
-                >
-                  <TextareaInput
-                    placeholder="Enter additional notes"
-                    value={trip.form.notes}
-                    onChange={text =>
-                      setTrip((prev: any) => ({
-                        ...prev,
-                        form: { ...prev.form, notes: text },
-                      }))
-                    }
-                  />
-                </Textarea>
-
-                <FormControlHelper>
-                  <FormControlHelperText className="text-gray-500">
-                    Compose something specific before generating your trip.
-                  </FormControlHelperText>
-                </FormControlHelper>
-              </FormControl> */}
             </VStack>
           </ScrollView>
 

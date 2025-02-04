@@ -11,6 +11,7 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 
 import states from '@/states';
 import services from '@/services';
+import { getTripStatus } from '@/helpers/getTripStatus';
 
 import FormButton from '@/components/FormButton';
 import MyTripsEmpty from '@/components/MyTripsEmpty';
@@ -39,26 +40,7 @@ const MyTrips: FC = () => {
       );
 
       const tripList = response.map((trip: any) => {
-        const startDate = new Date(trip.aiGenTrip.travelDates.start);
-        const endDate = new Date(trip.endDate);
-        const currentDate = new Date();
-
-        let status = 'UPCOMING';
-
-        if (startDate <= currentDate && endDate >= currentDate) {
-          status = 'ONGOING';
-        }
-
-        if (
-          startDate.getTime() - currentDate.getTime() <=
-          7 * 24 * 60 * 60 * 1000
-        ) {
-          status = 'FEW_DAYS_LEFT';
-        }
-
-        if (endDate < currentDate) {
-          status = 'PAST_TRIP';
-        }
+        const status = getTripStatus(trip);
 
         return {
           ...trip,
