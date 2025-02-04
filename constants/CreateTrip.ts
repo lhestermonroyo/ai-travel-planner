@@ -125,6 +125,7 @@ For Travel Itinerary
 - Consider also the season on suggesting places and activities
 - Apply breakfast, lunch and dinner on the itinerary and the place to eat
 - Ideal place to eat should be nearby or can be easily travelled from the previous activity place
+- Include the bus/train or rides to travel from one place to another
 - Give at least 3 to 6 activities per day
 
 For Notes

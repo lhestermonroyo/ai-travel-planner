@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import * as Linking from 'expo-linking';
 import { useRouter } from 'expo-router';
-import 'react-native-get-random-values';
+import Carousel from 'react-native-reanimated-carousel';
 import { Ionicons } from '@expo/vector-icons';
 import { Text } from '@/components/ui/text/';
 import { VStack } from '@/components/ui/vstack';
@@ -32,7 +32,7 @@ import {
 } from '@/components/ui/avatar';
 import { Image } from '@/components/ui/image';
 import { format } from 'date-fns';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 import states from '@/states';
 
@@ -44,29 +44,52 @@ import {
   useToast,
 } from '@/components/ui/toast';
 import TripStatusBadge from '@/components/TripStatusBadge';
+import services from '@/services';
+import StarRating from '@/components/StarRating';
 
 const apiKey: any = process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY;
 
 const TripDetails = () => {
   const [imageUri, setImageUri] = useState('');
-  const [selected, setSelected] = useState(['a', 'b', 'c', 'd']);
+  const [selected, setSelected] = useState([
+    'PREFERENCES',
+    'ITINERARY',
+    'FLIGHT_SUGGESTIONS',
+    'HOTEL_SUGGESTIONS',
+  ]);
+  const [rating, setRating] = useState<any>(null);
 
+  const auth = useRecoilValue(states.auth);
   const [trip, setTrip] = useRecoilState(states.trip);
   const {
-    tripItem: { createdAt, status, tripDetails, aiGenTrip },
+    tripItem: { id, createdAt, status, tripDetails, aiGenTrip },
   } = trip;
 
   const router = useRouter();
   const toast = useToast();
 
+  const screenWidth = Dimensions.get('window').width;
+
   useEffect(() => {
-    if (!trip.tripItem) {
-      router.push('/(tabs)/MyTrips');
-      return;
+    if (status && status === 'PAST_TRIP') {
+      fetchTripRating();
     }
 
     getPhotoReference();
   }, []);
+
+  const fetchTripRating = async () => {
+    try {
+      const response = await services.database.getRatingByTripId(id);
+
+      if (response) {
+        setSelected((prev: any) => ['RATING', ...prev]);
+        setRating(response[0]);
+      }
+    } catch (error) {
+      console.log('fetchTripRating [error]', error);
+    }
+  };
 
   const handleToast = (title: string, description: string, type: any) => {
     toast.show({
@@ -121,7 +144,7 @@ const TripDetails = () => {
     Linking.openURL(url);
   };
 
-  const screenWidth = Dimensions.get('window').width;
+  console.log('rating', JSON.stringify(rating, null, 2));
 
   return (
     <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
@@ -141,7 +164,7 @@ const TripDetails = () => {
               </Text>
             </HStack>
             <HStack space="2xl">
-              {(status === 'PAST_TRIP' || status === 'ONGOING') && (
+              {status === 'PAST_TRIP' && !rating && (
                 <Button
                   variant="link"
                   onPress={() => router.push('/trip-details/TripRating')}
@@ -168,17 +191,27 @@ const TripDetails = () => {
                 alt="trip-image"
                 source={{ uri: imageUri }}
               />
-              <VStack>
-                <Text size="4xl" className="text-primary-500 font-medium">
-                  {tripDetails.destination.description}
-                </Text>
-                <HStack space="xs" className="items-center">
-                  <Ionicons name="time-outline" size={14} />
-                  <Text size="md" className="text-secondary-900">
-                    {format(createdAt, 'MMM. d, yyyy - hh:mm a')}
+              <HStack className="justify-between items-center">
+                <VStack>
+                  <Text size="4xl" className="text-primary-500 font-medium">
+                    {tripDetails.destination.description}
                   </Text>
-                </HStack>
-              </VStack>
+                  <HStack space="xs" className="items-center">
+                    <Ionicons name="time-outline" size={14} />
+                    <Text size="md" className="text-secondary-900">
+                      {format(createdAt, 'MMM. d, yyyy - hh:mm a')}
+                    </Text>
+                  </HStack>
+                </VStack>
+                {rating?.stars && (
+                  <HStack space="xs" className="items-center">
+                    <Ionicons name="star" size={18} color="#e77828" />
+                    <Text size="2xl" className="font-medium">
+                      {rating.stars}
+                    </Text>
+                  </HStack>
+                )}
+              </HStack>
             </VStack>
 
             <Accordion
@@ -191,7 +224,7 @@ const TripDetails = () => {
               value={selected}
               onValueChange={value => setSelected(value)}
             >
-              <AccordionItem value="a">
+              <AccordionItem value="PREFERENCES">
                 <AccordionHeader>
                   <AccordionTrigger className="px-0">
                     {({ isExpanded }) => {
@@ -291,7 +324,91 @@ const TripDetails = () => {
                 </AccordionContent>
               </AccordionItem>
               <Divider />
-              <AccordionItem value="b">
+
+              {selected.includes('RATING') && rating && (
+                <Fragment>
+                  <AccordionItem value="RATING">
+                    <AccordionHeader>
+                      <AccordionTrigger className="px-0">
+                        {({ isExpanded }) => {
+                          return (
+                            <Fragment>
+                              <Text size="2xl" className="font-medium">
+                                Trip Feedback and Rating
+                              </Text>
+                              {isExpanded ? (
+                                <Box className="border-primary-500 border-solid border p-2 rounded-full">
+                                  <Ionicons
+                                    name="chevron-down-outline"
+                                    size={24}
+                                    color="#3b82f6"
+                                  />
+                                </Box>
+                              ) : (
+                                <Box className="border-primary-500 border-solid border p-2 rounded-full">
+                                  <Ionicons
+                                    name="chevron-back-outline"
+                                    size={24}
+                                    color="#3b82f6"
+                                  />
+                                </Box>
+                              )}
+                            </Fragment>
+                          );
+                        }}
+                      </AccordionTrigger>
+                    </AccordionHeader>
+                    <AccordionContent className="px-0 mb-4">
+                      <VStack space="xl">
+                        {rating.stars && <StarRating stars={rating.stars} />}
+                        <VStack space="xs">
+                          <Text className="flex-wrap text-medium" size="xl">
+                            {rating.feedback}
+                          </Text>
+                          <HStack space="xs" className="items-center">
+                            <Ionicons name="time-outline" size={14} />
+                            <Text size="md" className="text-secondary-900">
+                              {format(
+                                rating.createdAt,
+                                'MMM. d, yyyy - hh:mm a'
+                              )}
+                            </Text>
+                          </HStack>
+                        </VStack>
+                        <Box className="rounded-md overflow-hidden">
+                          <Carousel
+                            loop
+                            autoPlay
+                            autoPlayInterval={5000}
+                            width={screenWidth - 24}
+                            height={screenWidth / 1.2}
+                            data={rating?.photos}
+                            pagingEnabled
+                            scrollAnimationDuration={1000}
+                            renderItem={({ item }: any) => {
+                              return (
+                                <Box className="w-full h-full bg-secondary-400 justify-center items-center">
+                                  <Image
+                                    key={item}
+                                    size="full"
+                                    alt="trip-rating-photo"
+                                    className="w-full aspect-[16/9]"
+                                    resizeMode="cover"
+                                    source={{ uri: item }}
+                                  />
+                                </Box>
+                              );
+                            }}
+                          />
+                        </Box>
+                      </VStack>
+                    </AccordionContent>
+                  </AccordionItem>
+                  <Divider />
+                </Fragment>
+              )}
+
+              <AccordionItem value="ITINERARY">
                 <AccordionHeader>
                   <AccordionTrigger className="px-0">
                     {({ isExpanded }) => {
@@ -385,7 +502,8 @@ const TripDetails = () => {
                 </AccordionContent>
               </AccordionItem>
               <Divider />
-              <AccordionItem value="c">
+
+              <AccordionItem value="FLIGHT_SUGGESTIONS">
                 <AccordionHeader>
                   <AccordionTrigger className="px-0">
                     {({ isExpanded }) => {
@@ -430,9 +548,9 @@ const TripDetails = () => {
                       snapToAlignment="start"
                       decelerationRate="normal"
                       data={aiGenTrip.flightSuggestions}
-                      keyExtractor={item => item.airline}
-                      renderItem={({ item }) => (
+                      renderItem={({ item, index }) => (
                         <Card
+                          key={index}
                           style={{ width: screenWidth - 100 }}
                           className="p-4 mr-2"
                         >
@@ -496,7 +614,8 @@ const TripDetails = () => {
                 </AccordionContent>
               </AccordionItem>
               <Divider />
-              <AccordionItem value="d">
+
+              <AccordionItem value="HOTEL_SUGGESTIONS">
                 <AccordionHeader>
                   <AccordionTrigger className="px-0">
                     {({ isExpanded }) => {

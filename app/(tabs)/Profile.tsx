@@ -17,7 +17,7 @@ import {
   AvatarImage,
 } from '@/components/ui/avatar';
 import { Card } from '@/components/ui/card';
-import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
+import { useRecoilState, useResetRecoilState } from 'recoil';
 
 import states from '@/states';
 import { auth as firebaseAuth } from '@/services/firebase';
@@ -72,7 +72,7 @@ const Profile = () => {
 
   const handlePickImage = async () => {
     let response: any = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      mediaTypes: 'images',
       allowsEditing: true,
       aspect: [1, 1],
       quality: 1,

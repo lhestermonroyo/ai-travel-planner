@@ -62,7 +62,6 @@ const saveTrip = async (email: string, tripDetails: any, aiGenTrip: any) => {
       email,
       tripDetails,
       aiGenTrip,
-      ratings: null,
       createdAt,
     });
 
@@ -96,10 +95,50 @@ const getTripsByEmail = async (email: string) => {
   }
 };
 
+// RATINGS DATABASE
+const saveRating = async (tripId: string, ratings: any) => {
+  try {
+    const date = new Date();
+    const createdAt = date.toISOString();
+
+    const docRef = await addDoc(collection(db, 'ratings'), {
+      tripId,
+      ...ratings,
+      createdAt,
+    });
+
+    if (docRef) {
+      return await getDoc(doc(db, 'ratings', docRef.id));
+    }
+  } catch (error) {
+    console.log('updateTrip [error]', error);
+    throw error;
+  }
+};
+
+const getRatingByTripId = async (tripId: string) => {
+  try {
+    const q = query(collection(db, 'ratings'), where('tripId', '==', tripId));
+    const querySnapshot = await getDocs(q);
+
+    return querySnapshot.docs.map(doc => {
+      return {
+        id: doc.id,
+        ...doc.data(),
+      };
+    });
+  } catch (error) {
+    console.log('getRatingByTripId [error]', error);
+    throw error;
+  }
+};
+
 export default {
   saveUser,
   updateUser,
   getUser,
   saveTrip,
   getTripsByEmail,
+  saveRating,
+  getRatingByTripId,
 };
