@@ -1,5 +1,11 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import { KeyboardAvoidingView, SafeAreaView, ScrollView } from 'react-native';
+import {
+  Dimensions,
+  FlatList,
+  KeyboardAvoidingView,
+  SafeAreaView,
+  ScrollView,
+} from 'react-native';
 import * as Linking from 'expo-linking';
 import { useRouter } from 'expo-router';
 import 'react-native-get-random-values';
@@ -114,6 +120,8 @@ const TripDetails = () => {
 
     Linking.openURL(url);
   };
+
+  const screenWidth = Dimensions.get('window').width;
 
   return (
     <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
@@ -416,79 +424,74 @@ const TripDetails = () => {
                       </Text>
                     </Box>
                   ) : (
-                    <Fragment>
-                      {aiGenTrip.flightSuggestions.map(
-                        (item: any, i: number) => (
-                          <Card key={i} className="p-4 my-1">
-                            <VStack space="md">
-                              <VStack>
-                                <HStack
-                                  space="sm"
-                                  className="items-center mb-1"
-                                >
-                                  <Avatar className="bg-orange-400" size="md">
-                                    <AvatarFallbackText>
-                                      {item.airline}
-                                    </AvatarFallbackText>
-                                    <AvatarImage
-                                      source={{
-                                        uri: item.logoUri,
-                                      }}
-                                    />
-                                  </Avatar>
-                                  <Text size="xl" className="font-medium">
+                    <FlatList
+                      horizontal
+                      showsHorizontalScrollIndicator={false}
+                      snapToAlignment="start"
+                      decelerationRate="normal"
+                      data={aiGenTrip.flightSuggestions}
+                      keyExtractor={item => item.airline}
+                      renderItem={({ item }) => (
+                        <Card
+                          style={{ width: screenWidth - 100 }}
+                          className="p-4 mr-2"
+                        >
+                          <VStack space="md">
+                            <VStack>
+                              <HStack space="sm" className="items-center mb-1">
+                                <Avatar className="bg-orange-400" size="md">
+                                  <AvatarFallbackText>
                                     {item.airline}
-                                  </Text>
-                                </HStack>
+                                  </AvatarFallbackText>
+                                  <AvatarImage
+                                    source={{
+                                      uri: item.logoUri,
+                                    }}
+                                  />
+                                </Avatar>
+                                <Text size="xl" className="font-medium">
+                                  {item.airline}
+                                </Text>
+                              </HStack>
 
-                                <HStack space="xs" className="items-center">
-                                  <Ionicons name="airplane-outline" size={14} />
-                                  <Text
-                                    size="md"
-                                    className="text-secondary-900"
-                                  >
-                                    {item.departure} - {item.arrival}
-                                  </Text>
-                                </HStack>
-                                <HStack space="xs" className="items-center">
-                                  <Ionicons name="pricetag-outline" size={14} />
-                                  <Text
-                                    size="md"
-                                    className="text-secondary-900"
-                                  >
-                                    {item.price}
-                                  </Text>
-                                  <Text>|</Text>
-                                  <Ionicons name="timer-outline" size={14} />
-                                  <Text
-                                    size="md"
-                                    className="text-secondary-900"
-                                  >
-                                    {item.duration}
-                                  </Text>
-                                </HStack>
-                              </VStack>
-                              <HStack>
-                                <FormButton
-                                  variant="link"
-                                  text="Book Here"
-                                  onPress={() =>
-                                    handleLinkPress(item.bookingLink)
-                                  }
-                                  iconEnd={
-                                    <Ionicons
-                                      name="chevron-forward"
-                                      color="#3b82f6"
-                                      size={24}
-                                    />
-                                  }
-                                />
+                              <HStack space="xs" className="items-center">
+                                <Ionicons name="airplane-outline" size={14} />
+                                <Text size="md" className="text-secondary-900">
+                                  {item.departure} - {item.arrival}
+                                </Text>
+                              </HStack>
+                              <HStack space="xs" className="items-center">
+                                <Ionicons name="pricetag-outline" size={14} />
+                                <Text size="md" className="text-secondary-900">
+                                  {item.price}
+                                </Text>
+                                <Text>|</Text>
+                                <Ionicons name="timer-outline" size={14} />
+                                <Text size="md" className="text-secondary-900">
+                                  {item.duration}
+                                </Text>
                               </HStack>
                             </VStack>
-                          </Card>
-                        )
+                            <HStack>
+                              <FormButton
+                                variant="link"
+                                text="Book Here"
+                                onPress={() =>
+                                  handleLinkPress(item.bookingLink)
+                                }
+                                iconEnd={
+                                  <Ionicons
+                                    name="chevron-forward"
+                                    color="#3b82f6"
+                                    size={24}
+                                  />
+                                }
+                              />
+                            </HStack>
+                          </VStack>
+                        </Card>
                       )}
-                    </Fragment>
+                    />
                   )}
                 </AccordionContent>
               </AccordionItem>
@@ -533,9 +536,18 @@ const TripDetails = () => {
                     </Box>
                   ) : (
                     <Fragment>
-                      {aiGenTrip.hotelSuggestions.map(
-                        (item: any, i: number) => (
-                          <Card key={i} className="p-4 my-1">
+                      <FlatList
+                        horizontal
+                        showsHorizontalScrollIndicator={false}
+                        snapToAlignment="start"
+                        decelerationRate="normal"
+                        data={aiGenTrip.hotelSuggestions}
+                        keyExtractor={item => item.name}
+                        renderItem={({ item }) => (
+                          <Card
+                            style={{ width: screenWidth - 100 }}
+                            className="p-4 mr-2"
+                          >
                             <VStack space="md">
                               <HStack space="sm" className="items-center mb-1">
                                 <Avatar className="bg-orange-400" size="md">
@@ -605,8 +617,8 @@ const TripDetails = () => {
                               </HStack>
                             </VStack>
                           </Card>
-                        )
-                      )}
+                        )}
+                      />
                     </Fragment>
                   )}
                 </AccordionContent>
