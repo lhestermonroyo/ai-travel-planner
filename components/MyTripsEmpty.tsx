@@ -10,6 +10,7 @@ import FormButton from './FormButton';
 
 const MyTripsEmpty: FC = () => {
   const router = useRouter();
+
   return (
     <VStack space="4xl" className="flex-1 justify-center align-middle">
       <Center>

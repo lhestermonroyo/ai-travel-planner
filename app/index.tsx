@@ -1,13 +1,19 @@
+import {
+  configureReanimatedLogger,
+  ReanimatedLogLevel,
+} from 'react-native-reanimated';
+
 import React, { Fragment, useEffect, useState } from 'react';
 import { Redirect } from 'expo-router';
 import { onAuthStateChanged } from 'firebase/auth';
 import { useRecoilState } from 'recoil';
 
 import { auth as firebaseAuth } from '@/services/firebase';
+import services from '@/services';
 import states from '@/states';
+
 import LandingIntro from '../components/LandingIntro';
 import Loading from '@/components/Loading';
-import services from '@/services';
 
 const Index = () => {
   const [auth, setAuth] = useRecoilState(states.auth);
@@ -62,5 +68,10 @@ const Index = () => {
     </Fragment>
   );
 };
+
+configureReanimatedLogger({
+  level: ReanimatedLogLevel.warn,
+  strict: false, // Reanimated runs in strict mode by default
+});
 
 export default Index;

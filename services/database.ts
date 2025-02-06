@@ -95,6 +95,18 @@ const getTripsByEmail = async (email: string) => {
   }
 };
 
+const getTripById = async (tripId: string) => {
+  try {
+    const docRef = doc(db, 'trips', tripId);
+    const response = (await getDoc(docRef)).data();
+
+    return response;
+  } catch (error) {
+    console.log('getTripById [error]', error);
+    throw error;
+  }
+};
+
 // RATINGS DATABASE
 const saveRating = async (tripId: string, ratings: any) => {
   try {
@@ -112,6 +124,23 @@ const saveRating = async (tripId: string, ratings: any) => {
     }
   } catch (error) {
     console.log('updateTrip [error]', error);
+    throw error;
+  }
+};
+
+const getAllRatings = async () => {
+  try {
+    const q = query(collection(db, 'ratings'));
+    const querySnapshot = await getDocs(q);
+
+    return querySnapshot.docs.map(doc => {
+      return {
+        id: doc.id,
+        ...doc.data(),
+      };
+    });
+  } catch (error) {
+    console.log('getAllRatings [error]', error);
     throw error;
   }
 };
@@ -139,6 +168,8 @@ export default {
   getUser,
   saveTrip,
   getTripsByEmail,
+  getTripById,
   saveRating,
+  getAllRatings,
   getRatingByTripId,
 };

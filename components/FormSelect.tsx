@@ -21,6 +21,7 @@ import {
   FormControlLabel,
   FormControlLabelText,
 } from './ui/form-control';
+import { Box } from './ui/box';
 
 interface IFormSelectProps {
   placeholder: string;
@@ -79,6 +80,7 @@ const FormSelect: FC<IFormSelectProps> = ({
                 value={option.value}
               />
             ))}
+            <Box className="h-12" />
           </SelectContent>
         </SelectPortal>
       </Select>

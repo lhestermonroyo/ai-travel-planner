@@ -16,10 +16,10 @@ import { getTripStatus } from '@/helpers/getTripStatus';
 import FormButton from '@/components/FormButton';
 import MyTripsEmpty from '@/components/MyTripsEmpty';
 import TripCard from '@/components/TripCard';
-import MyTripsList from '@/components/MyTripsList';
+import MyTripsLoading from '@/components/MyTripsLoading';
 
 const MyTrips: FC = () => {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const [trips, setTrips] = useRecoilState(states.trip);
   const { tripList } = trips;
@@ -28,7 +28,9 @@ const MyTrips: FC = () => {
   const router = useRouter();
 
   useEffect(() => {
-    fetchTrips();
+    if (!tripList.length) {
+      fetchTrips();
+    }
   }, []);
 
   const fetchTrips = async () => {
@@ -85,7 +87,7 @@ const MyTrips: FC = () => {
           </Button>
         </HStack>
 
-        <MyTripsList loading={loading}>
+        <MyTripsLoading loading={loading}>
           <Fragment>
             {tripList.length ? (
               <Fragment>
@@ -108,7 +110,7 @@ const MyTrips: FC = () => {
               <MyTripsEmpty />
             )}
           </Fragment>
-        </MyTripsList>
+        </MyTripsLoading>
       </VStack>
     </SafeAreaView>
   );

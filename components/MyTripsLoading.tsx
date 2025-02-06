@@ -4,12 +4,12 @@ import { Skeleton, SkeletonText } from './ui/skeleton';
 import { Card } from './ui/card';
 import { VStack } from './ui/vstack';
 
-interface IMyTripsListProps {
+interface IMyTripsLoadingProps {
   loading: boolean;
   children: React.ReactElement;
 }
 
-const MyTripsList: FC<IMyTripsListProps> = ({ loading, children }) => {
+const MyTripsLoading: FC<IMyTripsLoadingProps> = ({ loading, children }) => {
   if (loading) {
     return (
       <Fragment>
@@ -38,4 +38,4 @@ const MyTripsList: FC<IMyTripsListProps> = ({ loading, children }) => {
   return children;
 };
 
-export default MyTripsList;
+export default MyTripsLoading;
