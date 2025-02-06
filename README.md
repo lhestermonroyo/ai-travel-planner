@@ -1,50 +1,69 @@
-# Welcome to your Expo app 👋
+# AI Travel Planner App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+## Overview
 
-## Get started
+The AI-Powered Travel Plan App is a React Native application built with Expo. It leverages artificial intelligence to generate personalized travel itineraries, suggest flights, and recommend hotels, making trip planning effortless and efficient.
 
-1. Install dependencies
+## Features
 
-   ```bash
-   npm install
-   ```
+- **AI-Generated Itineraries**: Create customized travel plans based on user preferences and interests.
+- **Flight Suggestions**: Find the best flight options based on budget, timing, and convenience.
+- **Hotel Recommendations**: Get personalized accommodation suggestions based on location and preferences.
+- **Feedback & Reviews**: Users can provide feedback and reviews on generated travel plans to improve recommendations.
+- **Profile Management**: Create and manage user profiles, save favorite trips, and track travel history.
+- **User-Friendly Interface**: Seamless navigation and intuitive design for a smooth user experience.
 
-2. Start the app
+## Technologies Used
 
-   ```bash
-    npx expo start
-   ```
+- **React Native**
+- **Expo**
+- **Gluestack-UI**
+- **Gemini API**
+- **Firebase**
+- **Google Maps API**
 
-In the output, you'll find options to open the app in a
+## Getting Started
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+1. Clone the repository:
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
+```
+git clone https://github.com/lhestermonroyo/ai-travel-planner.git
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+2. Navigate to the project directory:
 
-## Learn more
+```
+cd ai-travel-plan-app
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+3. Install dependencies:
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+```
+npm install
+```
 
-## Join the community
+4. Create a `.env` file in the root directory and add your environment variables:
 
-Join our community of developers creating universal apps.
+```
+EXPO_PUBLIC_FIREBASE_API_KEY=<Firebase API Key>
+EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN=<Firebase Auth Domain>
+EXPO_PUBLIC_FIREBASE_PROJECT_ID=<Firebase Project Id>
+EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET=<Firebase Storage Bucket>
+EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=<Firebase Sender ID>
+EXPO_PUBLIC_FIREBASE_APP_ID=<Firebase App ID>
+EXPO_PUBLIC_FIREBASE_MEASUREMENT_ID=<Firebase Measurement ID>
+EXPO_PUBLIC_GOOGLE_MAPS_API_KEY=<Google Maps API Key>
+EXPO_PUBLIC_GEMINI_API_KEY=<Gemini API Key>
+```
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+5. Run the application:
+
+```
+npx expo start --go
+# or
+yarn run start
+```
+
+## Contact
+
+For inquiries, reach me at [lhestermoon3011@gmail.com](mailto:lhestermoon3011@gmail.com)
