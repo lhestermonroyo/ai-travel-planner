@@ -1,4 +1,7 @@
-assets/ai_travel_planner_walkthrough.mp4
+<video width="600" controls>
+  <source src="https://github.com/lhestermonroyo/ai-travel-planner/assets/ai_travel_planner_walkthrough.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
 
 # AI Travel Planner App
 
